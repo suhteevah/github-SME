@@ -1,0 +1,61 @@
+# Agent Configuration — Course Review Pipeline
+# Routes inference through OpenClaw tier-based router
+
+[inference]
+# Model selection per agent task
+heavy_model = "claude-sonnet-4-20250514"    # Script analysis, reading validation, lab generation
+fast_model = "claude-sonnet-4-20250514"      # Quick checks, quiz validation
+default_temperature = 0.1                     # Low temperature for accuracy-critical review work
+max_tokens = 8192                             # Per-agent response limit
+
+[agents]
+# Enable/disable individual agents
+intake_enabled = true
+script_reviewer_enabled = true
+reading_reviewer_enabled = true
+quiz_validator_enabled = true
+lab_validator_enabled = true
+aggregator_enabled = true
+
+[quality_gates]
+# Must all pass before submission
+code_execution_required = true
+quiz_verification_required = true
+link_validation_required = true
+version_check_required = true
+terminology_consistency_required = true
+human_final_review_required = true
+
+[logging]
+# Verbose by default — log everything
+level = "DEBUG"
+format = "%(asctime)s | %(name)s | %(levelname)s | %(message)s"
+log_dir = "output/logs"
+log_to_file = true
+log_to_console = true
+
+[output]
+# Document generation settings
+output_dir = "output"
+docx_font = "Arial"
+docx_heading_color = "1A5276"
+reviewer_name = "Matt Gates"
+reviewer_title = "Subject Matter Expert"
+
+[domains.github]
+# GitHub-specific review criteria
+verify_git_commands = true
+verify_gh_cli_syntax = true
+verify_actions_yaml = true
+verify_api_endpoints = true
+verify_ui_references = true
+check_deprecated_features = true
+key_tools = ["git", "gh", "docker", "node", "python"]
+
+[domains.stripe]
+# Stripe-specific review criteria (future)
+verify_api_version = true
+verify_sdk_syntax = true
+verify_webhook_events = true
+check_deprecated_methods = true
+key_tools = ["stripe", "node", "python", "curl"]
